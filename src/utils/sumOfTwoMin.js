@@ -1,28 +1,35 @@
-export function sumOfTwoMin(arr = []){
-    arr = arr
-        .map(e => e !== '' && Number(e))
-        .filter(e => typeof e === 'number' && !isNaN(e))
+function sumOfTwoMin(arr = []) {
+    const checkOnNumber = arr.some(e => isNaN(e))
 
-    let result = 0
-    switch (true) {
-        case arr.length === 0:
-            result = 0
-            break;
-
-        case arr.length === 1:
-            result = arr[0]
-            break;
-
-        case arr.length > 1:
-            arr.sort(function(a, b) {
-                return a-b
-            })
-            result = arr[0] + arr[1]
-            break;
-
+    if(checkOnNumber) {
+        throw new Error('В массиве есть нечисловое значение!')
     }
 
-    return result
+    if(arr.length === 0) {
+        throw new Error('Массив пустой!')
+    }
+
+    if(arr.length < 2) {
+        throw new Error('В массиве должно быть как минимум два числа!')
+    }
+
+    let minA = Number(arr[0])
+    let minB = Number(arr[1])
+    for(let num of arr) {
+        if (num >= minA && num >= minB) {
+            continue
+        }
+
+        if (num < minA && minA < minB) {
+            minB = Number(num)
+        }
+
+        if (num < minB && minB < minA) {
+            minA = Number(num)
+        }
+    }
+
+    return minA + minB
 }
 
 module.exports = sumOfTwoMin

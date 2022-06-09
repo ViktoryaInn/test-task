@@ -1,23 +1,16 @@
 <template lang="pug">
   div(id="app")
-    biba
-    calculate-form(@calculate="result = $event")
+    calculate-form(@calculate="result = $event", @beforeCalculate="result = null")
     p(v-if="result !== null") Cумма двух минимальных чисел {{result}}
-    img(alt="Vue logo", src="./assets/logo.png")
-    HelloWorld(msg="Welcome to Your Vue.js App")
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Biba from "@/components/Biba";
 import CalculateForm from "@/components/CalculateForm";
 
 export default {
   name: 'App',
   components: {
-    CalculateForm,
-    Biba,
-    HelloWorld
+    CalculateForm
   },
   data() {
     return {

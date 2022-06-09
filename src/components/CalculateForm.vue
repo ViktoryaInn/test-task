@@ -1,29 +1,36 @@
 <template lang="pug">
   form(@keyup.enter.prevent="calculate()")
     textarea(v-model="value")
+    error-message(:message="error")
     button(@click.prevent="calculate()") biba
 </template>
 
 <script>
-import {sumOfTwoMin} from "@/utils/sumOfTwoMin";
+import ErrorMessage from "@/components/ErrorMessage";
+const sumOfTwoMin = require('@/utils/sumOfTwoMin')
 
 export default {
   name: "CalculateForm",
+  components: {ErrorMessage},
   data() {
     return {
-      value: ''
+      value: '',
+      error: ''
     }
   },
   methods: {
     calculate() {
-      let result = 0
+      this.$emit('beforeCalculate')
+      this.error = ''
+
       const value = this.value.replace(/\s+/g, '')
 
-      if(value !== ''){
-        result = sumOfTwoMin(value.split(','))
+      try {
+        const result = sumOfTwoMin(value.split(','))
+        this.$emit('calculate', result)
+      } catch (e) {
+        this.error = e.message || ''
       }
-
-      this.$emit('calculate', result)
     },
   }
 }
